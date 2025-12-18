@@ -1,0 +1,76 @@
+//problem1
+// function to calculate the factorial of a number (using BigInt for large numbers)
+function factorial(n) {
+    let result = 1n; 
+
+    // Loop from 2 to n, multiplying each number
+    for (let i = 2n; i <= BigInt(n); i++) {
+        result *= i; 
+    }
+
+    return result;
+}
+
+// function to calculate the sum of the digits in the factorial result
+function sumOfDigitsInFactorial(n) {
+    let fact = factorial(n).toString(); // Convert factorial to a string
+
+    let sum = 0; // Initialize sum at 0
+
+    // Loop through each digit in the string
+    for (let i = 0; i < fact.length; i++) {
+        sum += Number(fact[i]); 
+    }
+
+    return sum; 
+}
+
+
+console.log(sumOfDigitsInFactorial(100)); 
+
+
+
+//problem2
+// Function to calculate the length of the Collatz sequence for a given number
+function collatzLength(n, memo) {
+    let original = n; // Store original number
+    let count = 0;
+
+    while (n !== 1) {
+        if (memo[n]) {
+            count += memo[n]; // Use stored result if available
+            break;
+        }
+
+        if (n % 2 === 0) {
+            n = n / 2; // If even, divide by 2
+        } else {
+            n = 3 * n + 1; // If odd, apply 3n + 1 rule
+        }
+
+        count++; // Increase sequence length
+    }
+
+    memo[original] = count + 1; // Store result to avoid redundant calculations
+    return memo[original];
+}
+
+// function to find the starting number under a given limit that produces the longest Collatz sequence
+function longestCollatz(limit) {
+    let maxLength = 0;
+    let startingNumber = 0;
+    let memo = {}; 
+
+    for (let i = 1; i < limit; i++) {
+        let length = collatzLength(i, memo);
+        if (length > maxLength) {
+            maxLength = length;
+            startingNumber = i;
+        }
+    }
+
+    return startingNumber;
+}
+
+
+console.log(longestCollatz(1000000));
